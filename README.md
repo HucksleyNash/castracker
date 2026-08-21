@@ -11,8 +11,6 @@ does not mean that it is licensed for downloading.
 
 ## Screenshots
 
-The screenshots below use fictional demo data.
-
 ### Library overview
 
 ![Castracker podcast library overview](docs/screenshots/library.png)
@@ -21,9 +19,9 @@ The screenshots below use fictional demo data.
 
 ![Castracker podcast details and episode management](docs/screenshots/podcast-detail.png)
 
-### Activity history
+### Add a podcast
 
-![Castracker download and refresh activity history](docs/screenshots/activity.png)
+![Castracker add-podcast workflow](docs/screenshots/add-podcast.png)
 
 ## Responsible use
 
