@@ -9,6 +9,22 @@ Optional yt-dlp integration can inspect public YouTube playlists and other
 public media sources. A source being publicly reachable or technically supported
 does not mean that it is licensed for downloading.
 
+## Screenshots
+
+The screenshots below use fictional demo data.
+
+### Library overview
+
+![Castracker podcast library overview](docs/screenshots/library.png)
+
+### Podcast details
+
+![Castracker podcast details and episode management](docs/screenshots/podcast-detail.png)
+
+### Activity history
+
+![Castracker download and refresh activity history](docs/screenshots/activity.png)
+
 ## Responsible use
 
 Use Castracker only for media that you own or are authorized to download, such
