@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#11191a">
+    <title>Castracker</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark"
+            aria-hidden="true"><span></span><span></span><span></span></div>
+          <div><strong>Castracker</strong><small>Podcast Library</small></div>
+        </div>
+
+        <nav class="primary-nav" aria-label="Primary">
+          <button class="nav-item active"
+            data-view="library"><span>◫</span> Library</button>
+          <button class="nav-item"
+            data-view="queue"><span>⇣</span> Activity <b id="active-job-badge" hidden>0</b></button>
+          <button class="nav-item"
+            data-view="settings"><span>⚙</span> Settings</button>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+        <div class="tool-health" id="tool-health">
+          <small>SYSTEM</small>
+          <div><i class="health-dot"></i><span>Checking tools…</span></div>
+        </div>
+        <div class="sidebar-foot">Local-first · AudioBookShelf ready</div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow" id="page-eyebrow">YOUR COLLECTION</p>
+            <h1 id="page-title">Podcast library</h1>
+          </div>
+          <div class="topbar-actions">
+            <label class="search-box" id="global-search-wrap">
+              <span>⌕</span>
+              <input id="global-search" type="search"
+                placeholder="Search your library" autocomplete="off">
+            </label>
+            <button class="button primary"
+              id="open-add"><span>＋</span> Add podcast</button>
+          </div>
+        </header>
+
+        <section id="library-view" class="view active">
+          <div class="stats-row" id="stats-row"></div>
+          <div class="section-heading">
+            <div>
+              <h2>All podcasts</h2>
+              <p
+                id="library-subtitle">Your managed AudioBookShelf collection</p>
+            </div>
+            <div class="segmented"
+              aria-label="Library view"><button class="active">Grid</button></div>
+          </div>
+          <div id="podcast-grid" class="podcast-grid"></div>
+          <div id="empty-library" class="empty-state" hidden>
+            <div class="empty-orbit">
+              <div>◉</div>
+            </div>
+            <h2>Build your listening archive</h2>
+            <p>Add an authorized podcast RSS feed to create an organized, AudioBookShelf-ready listening archive. Optional public-media support is available through yt-dlp.</p>
+            <button class="button primary"
+              id="empty-add">Add your first podcast</button>
+          </div>
+        </section>
+
+        <section id="queue-view" class="view">
+          <div class="section-heading roomy">
+            <div>
+              <h2>Activity</h2>
+              <p>Downloads, feed refreshes, metadata work, and tool setup</p>
+            </div>
+          </div>
+          <div id="jobs-list" class="jobs-list"></div>
+        </section>
+
+        <section id="settings-view" class="view">
+          <div class="section-heading roomy">
+            <div>
+              <h2>Settings</h2>
+              <p>Storage and media-processing tools</p>
+            </div>
+          </div>
+          <div class="settings-grid">
+            <article class="settings-card wide">
+              <div class="settings-icon">⌂</div>
+              <div class="settings-copy">
+                <h3>Podcast library folder</h3>
+                <p>Point AudioBookShelf at this folder as a Podcast library. Each show is kept in its own flat folder.</p>
+                <form id="library-path-form" class="inline-form">
+                  <input id="library-path" type="text" spellcheck="false">
+                  <button class="button secondary"
+                    type="submit">Save path</button>
+                </form>
+                <div id="library-path-status" class="library-path-status"></div>
+              </div>
+            </article>
+            <article class="settings-card" id="ffmpeg-card"></article>
+            <article class="settings-card" id="ytdlp-card"></article>
+            <article class="settings-card">
+              <div class="settings-icon">▤</div>
+              <div class="settings-copy">
+                <h3>AudioBookShelf layout</h3>
+                <p>Flat podcast folders, cover artwork, episode-level tags, and readable sidecar metadata are generated automatically.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="detail-view" class="view">
+          <button class="text-button back-button"
+            id="detail-back">← Back to library</button>
+          <div id="podcast-detail"></div>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="add-dialog" class="modal add-modal">
+      <form method="dialog"
+        class="modal-close-form"><button aria-label="Close">×</button></form>
+      <div class="modal-kicker">ADD TO LIBRARY</div>
+      <h2>Bring a series home.</h2>
+      <p
+        class="modal-lead">Start with a podcast RSS feed you are authorized to download. YouTube and other public-media sources are optional and remain subject to their providers' terms.</p>
+      <form id="inspect-form">
+        <label class="field-label" for="source-url">Source link</label>
+        <div class="source-input-row">
+          <input id="source-url" type="url" required placeholder="https://…"
+            autocomplete="url">
+          <button class="button primary" type="submit">Inspect</button>
+        </div>
+        <label class="check-row rights-row"><input id="rights-confirm"
+            type="checkbox" required><span>I confirm that I own this media or have permission or another legal right to access and download it.</span></label>
+      </form>
+      <div
+        class="provider-row"><span>RSS recommended</span><span>Optional: YouTube</span><span>Optional: public media</span></div>
+      <div id="inspect-loading" class="inspect-loading"
+        hidden><i></i><div><strong>Reading source metadata</strong><span>Finding artwork and episodes…</span></div></div>
+      <form id="add-form" class="add-preview" hidden>
+        <div class="preview-header">
+          <div id="preview-cover" class="preview-cover"></div>
+          <div><span id="preview-provider" class="source-badge"></span><h3 id="preview-title"></h3><p id="preview-meta"></p></div>
+        </div>
+        <div class="form-grid">
+          <label><span>Library title</span><input id="add-title" required></label>
+          <label><span>Author / publisher</span><input id="add-author"></label>
+          <label><span>Audio quality</span>
+          <select id="add-quality">
+            <option value="high-m4a">High · M4A 160 kbps</option>
+            <option value="standard-mp3">Standard · MP3 128 kbps</option>
+            <option value="compact-mp3">Compact · MP3 64 kbps</option>
+          </select>
+        </label>
+          <label><span>Initial download</span>
+          <select id="add-download-count">
+            <option value="0">Add only</option>
+            <option value="1">First episode</option>
+            <option value="3">First 3 episodes</option>
+            <option value="10">First 10 episodes</option>
+          </select>
+        </label>
+        </div>
+        <label
+          class="toggle-row"><input id="add-auto" type="checkbox"><span class="toggle"></span><span><strong>Auto-download new episodes</strong><small>Queue new items whenever this source is refreshed</small></span></label>
+        <div class="preview-description" id="preview-description"></div>
+        <div
+          class="modal-actions"><button class="button ghost" type="button" id="inspect-reset">Use another link</button><button class="button primary" type="submit">Add to library</button></div>
+      </form>
+    </dialog>
+
+    <dialog id="confirm-dialog" class="modal confirm-modal">
+      <div class="danger-mark">!</div>
+      <h2>Remove this podcast?</h2>
+      <p id="confirm-copy"></p>
+      <label
+        class="check-row"><input type="checkbox" id="remove-files"><span>Also permanently delete its managed audio folder</span></label>
+      <div
+        class="modal-actions"><button class="button ghost" id="cancel-remove">Cancel</button><button class="button danger" id="confirm-remove">Remove podcast</button></div>
+    </dialog>
+
+    <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

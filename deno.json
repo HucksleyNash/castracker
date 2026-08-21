@@ -1,0 +1,12 @@
+{
+  "tasks": {
+    "start": "deno run --allow-all castracker/server.ts",
+    "test": "deno test --allow-read --allow-write castracker/tests",
+    "check": "deno check castracker/server.ts castracker/public/app.js",
+    "verify": "deno task check && deno task test"
+  },
+  "fmt": {
+    "lineWidth": 80,
+    "semiColons": true
+  }
+}
